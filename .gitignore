@@ -10,3 +10,4 @@ reports/demo/
 # republishing them on GitHub. Back the folder up separately: it IS your
 # point-in-time history.
 data/raw/holdings/*.csv
+.DS_Store
