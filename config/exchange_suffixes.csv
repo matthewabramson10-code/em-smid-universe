@@ -1,0 +1,42 @@
+match,yahoo_suffix,ticker_rule,country_hint,notes
+bombay,.BO,upper,India,BSE; prefer NSE when both exist
+national stock exchange of india,.NS,upper,India,NSE
+korea exchange (kosdaq),.KQ,pad6,South Korea,KOSDAQ; match before the generic Korea row
+kosdaq,.KQ,pad6,South Korea,
+korea exchange,.KS,pad6,South Korea,KOSPI
+taiwan stock exchange,.TW,pad4,Taiwan,
+gretai,.TWO,pad4,Taiwan,Taipei Exchange (OTC)
+taipei exchange,.TWO,pad4,Taiwan,
+hong kong,.HK,pad4,Hong Kong / China H,
+shanghai,.SS,pad6,China A,
+shenzhen,.SZ,pad6,China A,
+sao paulo,.SA,upper,Brazil,
+b3 s.a.,.SA,upper,Brazil,
+mexican,.MX,strip_star,Mexico,Bolsa Mexicana; drops trailing *
+mexico,.MX,strip_star,Mexico,
+johannesburg,.JO,upper,South Africa,
+istanbul,.IS,upper,Turkey,Borsa Istanbul
+warsaw,.WA,upper,Poland,
+stock exchange of thailand,.BK,strip_thai,Thailand,drops -R / -F / /F board suffixes
+bursa malaysia,.KL,pad4,Malaysia,numeric codes
+indonesia,.JK,upper,Indonesia,
+philippine,.PS,upper,Philippines,
+saudi,.SR,upper,Saudi Arabia,Tadawul
+qatar,.QA,upper,Qatar,
+dubai,.AE,upper,UAE,verify: Yahoo DFM suffix
+abu dhabi,.AE,upper,UAE,verify: Yahoo ADX suffix
+kuwait,.KW,upper,Kuwait,
+santiago,.SN,upper,Chile,
+colombia,.CL,upper,Colombia,verify
+lima,.LM,upper,Peru,verify
+athens,.AT,upper,Greece,
+prague,.PR,upper,Czech Republic,
+budapest,.BD,upper,Hungary,
+egyptian,.CA,upper,Egypt,verify
+ho chi minh,.VN,upper,Vietnam,verify: thin Yahoo coverage
+hochiminh,.VN,upper,Vietnam,verify
+karachi,.KA,upper,Pakistan,verify
+pakistan,.KA,upper,Pakistan,verify
+nasdaq,,upper,US listing,ADR / US line: no suffix
+new york stock exchange,,upper,US listing,ADR / US line: no suffix
+nyse,,upper,US listing,
