@@ -30,8 +30,19 @@ def _apply_rule(ticker: str, rule: str) -> str:
     if rule == "strip_star":
         return t.rstrip("*")
     if rule == "strip_thai":
-        return re.sub(r"(-R|-F|/F|-NVDR)$", "", t)
+        # iShares lists Thai NVDRs / foreign boards as XXX.R, XXX-R, XXX.F, XXX/F
+        return re.sub(r"([.\-/](R|F|NVDR))$", "", t)
+    if rule == "strip_dot_e":
+        # iShares lists Borsa Istanbul shares as XXXX.E; Yahoo wants XXXX.IS
+        return re.sub(r"\.E$", "", t)
+    if rule == "dot_to_dash":
+        # Share classes: iShares AGUAS.A -> Yahoo AGUAS-A
+        return t.replace(".", "-")
     return t
+
+
+def _is_missing(ticker) -> bool:
+    return ticker is None or str(ticker).strip() in {"", "-", "--", "NAN", "nan", "None"}
 
 
 def _china_a_suffix(ticker: str) -> str:
@@ -40,7 +51,9 @@ def _china_a_suffix(ticker: str) -> str:
 
 
 def to_yahoo(local_ticker: str, exchange: str, emap: pd.DataFrame) -> tuple[str | None, str]:
-    """Return (yahoo_symbol, status). status is 'mapped' or 'unmapped_exchange'."""
+    """Return (yahoo_symbol, status): 'mapped', 'missing_ticker' or 'unmapped_exchange'."""
+    if _is_missing(local_ticker):
+        return None, "missing_ticker"
     ex = (exchange or "").lower()
     for row in emap.itertuples(index=False):
         if row.match and row.match in ex:

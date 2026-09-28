@@ -37,10 +37,19 @@ def test_loader_keeps_only_equities(h):
     ("6446", "Gretai Securities Market", "6446.TWO"),
     ("KRU", "Warsaw Stock Exchange/Equities/Main Market", "KRU.WA"),
     ("TOTS3", "XBSP - B3 S.A.", "TOTS3.SA"),
+    ("TRMET.E", "Istanbul Stock Exchange", "TRMET.IS"),
+    ("TTW.R", "Stock Exchange Of Thailand", "TTW.BK"),
+    ("AGUAS.A", "Santiago Stock Exchange", "AGUAS-A.SN"),
 ])
 def test_to_yahoo(ticker, exchange, expected):
     sym, status = symbology.to_yahoo(ticker, exchange, symbology.load_exchange_map())
     assert (sym, status) == (expected, "mapped")
+
+
+@pytest.mark.parametrize("ticker", ["-", "", "  ", None])
+def test_missing_ticker(ticker):
+    assert symbology.to_yahoo(ticker, "Hong Kong Exchanges And Clearing Ltd",
+                              symbology.load_exchange_map()) == (None, "missing_ticker")
 
 
 def test_unmapped_exchange_is_reported(h):

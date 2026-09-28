@@ -63,14 +63,25 @@ class YahooSource(CacheOnlySource):
         p = _cache_path(symbol, self.cache_dir)
         if p.exists() and not self.refresh:
             return super().get(symbol, start, end)
+        import logging
+
         import yfinance as yf  # imported lazily so offline runs don't need it
 
-        try:
-            raw = yf.download(symbol, start=start, end=end + timedelta(days=1),
-                              progress=False, auto_adjust=False, threads=False)
-        except Exception as exc:
-            print(f"[yahoo] {symbol}: {exc}")
-            raw = pd.DataFrame()
+        # yfinance prints a multi-line warning for every symbol it can't find;
+        # those misses are recorded as coverage results instead.
+        logging.getLogger("yfinance").setLevel(logging.CRITICAL)
+
+        raw = None
+        for attempt in range(2):  # one retry covers brief network drops
+            try:
+                raw = yf.download(symbol, start=start, end=end + timedelta(days=1),
+                                  progress=False, auto_adjust=False, threads=False)
+            except Exception as exc:
+                print(f"[yahoo] {symbol}: {exc}")
+                raw = None
+            if raw is not None and not raw.empty:
+                break
+            time.sleep(2 if attempt == 0 else 0)
         time.sleep(self.pause_s)
         if raw is None or raw.empty:
             return _empty()

@@ -6,6 +6,7 @@ data/*.duckdb
 data/*.duckdb.wal
 data/cache/*.parquet
 reports/demo/
-# Holdings downloads are small and useful to version (they ARE your point-in-time
-# history), so they are tracked by default. Uncomment to ignore them instead:
-# data/raw/holdings/*.csv
+# iShares holdings files are BlackRock data; keep them local rather than
+# republishing them on GitHub. Back the folder up separately: it IS your
+# point-in-time history.
+data/raw/holdings/*.csv
